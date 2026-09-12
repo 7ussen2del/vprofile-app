@@ -125,7 +125,7 @@ jobs:
       - name: Update Helm values.yaml image and tag
         run: |
           cd helm-repo
-          yq eval '.app.image = env(ECR_IMAGE) | .app.tag = env(IMAGE_TAG)' -i helm/vprofile/values.yaml
+          yq eval '.app.image = env(ECR_IMAGE) | .app.tag = env(IMAGE_TAG)' -i helm/helm/vprofile/values.yaml
         env:
           IMAGE_TAG: ${{ needs.docker-build-push.outputs.image_tag }}
           ECR_IMAGE: ${{ needs.docker-build-push.outputs.ecr_image }}
@@ -136,7 +136,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           if ! git diff --quiet; then
-            git add helm/vprofile/values.yaml
+            git add helm/helm/vprofile/values.yaml
             git commit -m "Update Helm app.image and app.tag to ${IMAGE_TAG} on main"
             git push origin HEAD:main
           else
